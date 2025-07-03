@@ -1,3 +1,4 @@
+from . import models
 from .llm_interface import call_llm
 import logging
 
@@ -5,9 +6,20 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class LLMEvaluator:
-    def __init__(self, model: str = "gemini/gemini-pro", api_key: str = None):
+    def __init__(self, model: str = models.GEMINI_DEFAULT_MODEL, api_key: str = None):
         self.model = model
         self.api_key = api_key
+        self.budget = None
+
+    def set_model(self, model: str):
+        if model not in models.GEMINI_SUPPORTED_MODELS.keys() or len(model) > 45:
+            raise ValueError(f"Model {model} is currently not supported. Please selected a different model.")
+        self.model = model
+
+    def set_thinking_credits(self, budget: int):
+        if budget not in models.GEMINI_THINKING_CREDITS:
+            raise ValueError(f"Credit amount {budget} is invalid")
+        self.budget = budget
 
     def sanitize_input(self, text: str) -> str:
         sanitized = text.strip().replace("\n", " ")
@@ -51,15 +63,15 @@ class LLMEvaluator:
         if score == 'c':
             return 0.5
 
-        # if we could not parse, return 0
+        # if 'b' or we could not parse, return 0 (no confidence)
         return 0.0
 
     def evaluate_answer (self, prompt: str, answer: str = None) -> dict:
         if answer is None:
             # first ask the LLM the question, then for the trustworthiness score
-            answer_prompt = self.sanitize_input(prompt)
-            messages = [{"role": "user", "content": answer_prompt}]
-            answer = call_llm(messages, model=self.model, api_key=self.api_key)
+            sanitized_prompt = self.sanitize_input(prompt)
+            messages = [{"role": "user", "content": sanitized_prompt}]
+            answer = call_llm(messages, model=self.model, api_key=self.api_key, budget=self.budget)
         else:
             self.validate_input(answer, "Answer")
 
@@ -68,6 +80,6 @@ class LLMEvaluator:
         # Assemble the prompt
         reflection_prompt = self.build_self_reflection_prompt(prompt, answer)
         messages = [{"role": "user", "content": reflection_prompt}]
-        output = call_llm(messages, model=self.model, api_key=self.api_key)
+        output = call_llm(messages, model=self.model, api_key=self.api_key, budget=self.budget)
         certainty_score = self.parse_certainty_score(output)
-        return {"certainty_score": certainty_score, "raw_response": output}
+        return {"certainty_score": certainty_score, "raw_response": answer}

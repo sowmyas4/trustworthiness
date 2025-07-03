@@ -6,4 +6,4 @@ if __name__ == "__main__":
     evaluator = LLMEvaluator(api_key=api_key)
     result = evaluator.evaluate_answer("What is 1 + 1?", "2")
     print("Certainty score:", result["certainty_score"])
-    print("Raw response:", result["raw_response"])
+    print("LLM response:", result["raw_response"])

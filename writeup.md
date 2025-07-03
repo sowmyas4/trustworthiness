@@ -33,6 +33,11 @@ retry mechanism optional.
 to the LLM output, but I noticed that LLM may respond with different formats
 (and it may change over time). So I opted just to remove the newlines
 from the output and return 0.0 confidence if the output could not be parsed.
+- LLM feature configuration: I debated keeping some LLM-specific properties
+like model, api key, and budget/credits in the `llm_interface` class, but
+ultimately decided to keep the `llm_interface` class as simple as possible.
+I also figured that users would do what I did initially - and call the same
+query using multiple models to see which was best.
 
 This took me a little less than 2 hours to do the functional work, but I took
 an additional couple hours to experiment with different elements and have
