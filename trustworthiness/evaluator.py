@@ -6,10 +6,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class LLMEvaluator:
-    def __init__(self, model: str = models.GEMINI_DEFAULT_MODEL, api_key: str = None):
-        self.model = model
+    def __init__(self, api_key: str = None):
         self.api_key = api_key
         self.budget = None
+        self.model = models.GEMINI_DEFAULT_MODEL
 
     def set_model(self, model: str):
         if model not in models.GEMINI_SUPPORTED_MODELS.keys() or len(model) > 45:

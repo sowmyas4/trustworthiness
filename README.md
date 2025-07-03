@@ -7,8 +7,9 @@ It evaluates the self-reflection certainty score of LLM-generated answers based 
 ```bash
 git clone git@github.com:sowmyas4/ai-uncertainty-estimator.git .
 cd ai-uncertainty-estimator
-python3 -m venv .venv
-pip3 install litellm
+python3 -m venv .venv     # create a virtual environment
+source .venv/bin/activate # activate the virtual environment
+pip3 install litellm      # install dependencies
 ```
 
 ## Simple Demo
@@ -37,7 +38,8 @@ https://docs.litellm.ai/docs/providers/gemini#chat-models
 Run unit tests using:
 
 ```bash
-pytest tests/
+pip3 install pytest
+python3 -m pytest
 ```
 
 ## Contributing and Maintaining
