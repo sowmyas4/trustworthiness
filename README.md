@@ -1,5 +1,5 @@
 # ai-uncertainty-estimator
-Package to query an LLM and return answer while estimating the uncertainty of that answer.
+Python library to query an LLM and return answer while estimating the uncertainty of that answer.
 It evaluates the self-reflection certainty score of LLM-generated answers based on the Cleanlab ACL'24 paper.
 
 ## Install

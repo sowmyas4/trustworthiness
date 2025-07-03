@@ -1,0 +1,22 @@
+[project]
+name = "trustworthiness"
+version = "0.1.0"
+description = "Python library to query an LLM and return answer while estimating the uncertainty of that answer"
+authors = [
+    {name = "sowmyas4",email = "48227305+sowmyas4@users.noreply.github.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "litellm (>=1.73.6,<2.0.0)"
+]
+
+[tool.poetry]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.1"
+pytest-cov = "^6.2.1"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
